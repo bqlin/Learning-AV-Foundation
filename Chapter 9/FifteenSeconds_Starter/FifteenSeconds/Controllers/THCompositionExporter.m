@@ -44,22 +44,63 @@
 }
 
 - (void)beginExport {
-
-    // Listing 9.9
-
+    // Bq
+	// 创建一个组合的可导出版本
+	self.exportSession = [self.composition makeExportable];
+	self.exportSession.outputURL = [self exportURL];
+	self.exportSession.outputFileType = AVFileTypeMPEG4;
+	
+	[self.exportSession exportAsynchronouslyWithCompletionHandler:^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			AVAssetExportSessionStatus status = self.exportSession.status;
+			if (status == AVAssetExportSessionStatusCompleted) {
+				[self writeExportedVideoToAssetsLibrary];
+			} else {
+				[UIAlertView showAlertWithTitle:@"导出失败" message:@"请求导出失败。"];
+			}
+		});
+	}];
+	
+	self.exporting = YES;
+	[self monitorExportProgress];
 }
 
+/// 监视导出过程
 - (void)monitorExportProgress {
-
-    // Listing 9.10
-
-    // Listing 9.11
-
+	// bq
+	double delayInSeconds = 0.1;
+	int64_t delta = (int64_t)(delayInSeconds * NSEC_PER_SEC);	// ! 此处加了括号
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delta);
+	
+	dispatch_after(popTime, dispatch_get_main_queue(), ^{
+		AVAssetExportSessionStatus stauts = self.exportSession.status;
+		if (stauts ==  AVAssetExportSessionStatusExporting) {
+			self.progress = self.exportSession.progress;
+			[self monitorExportProgress];	// 递归回调
+		} else {
+			self.exporting = NO;
+		}
+	});
 }
 
+/// 把导出的文件写入 Asset Laibrary
 - (void)writeExportedVideoToAssetsLibrary {
-
-    // Listing 9.11
+	NSURL *exportURL = self.exportSession.outputURL;
+	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+	
+	if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:exportURL]) { // 检查要写入的内容是否可写入
+		[library writeVideoAtPathToSavedPhotosAlbum:exportURL completionBlock:^(NSURL *assetURL, NSError *error) {	// 调用该方法会弹出询问用户是否允许访问相册
+			if (error) {
+				NSString *message = @"Unable to write ro Photos library.";
+				[UIAlertView showAlertWithTitle:@"写入失败" message:message];
+			} else {
+				NSLog(@"导出成功！");
+			}
+			[[NSFileManager defaultManager] removeItemAtURL:exportURL error:nil];
+		}];
+	}else{
+		NSLog(@"视频无法导出到媒体库。");
+	}
     
 }
 

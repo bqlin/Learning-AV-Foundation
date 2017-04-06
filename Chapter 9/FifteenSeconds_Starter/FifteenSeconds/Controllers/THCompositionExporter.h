@@ -22,17 +22,22 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+// 导出组合
+//
 
 #import "THTimeline.h"
 #import "THComposition.h"
 
 @interface THCompositionExporter : NSObject
 
+/// 是否正在导出
 @property (nonatomic) BOOL exporting;
+/// 导出进度
 @property (nonatomic) CGFloat progress;
 
 - (instancetype)initWithComposition:(id <THComposition>)composition;
 
+/// 负责实际的导出过程
 - (void)beginExport;
 
 @end

@@ -22,6 +22,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+// 创建一个组合的可播放版本和可导出版本
+//
 
 #import <AVFoundation/AVFoundation.h>
 

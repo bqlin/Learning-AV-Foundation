@@ -22,6 +22,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+// 对于每个 THComposition 实现，内部都会有一个相应的 THCompositionBuilder 负责构建实例
 
 #import <AVFoundation/AVFoundation.h>
 #import "THComposition.h"

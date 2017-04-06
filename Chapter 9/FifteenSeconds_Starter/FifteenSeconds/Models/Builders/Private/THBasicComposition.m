@@ -44,17 +44,16 @@
 }
 
 - (AVPlayerItem *)makePlayable {
-
-    // Listing 9.3
-
-    return nil;
+	// bq
+	AVPlayerItem *itemPlayable = [AVPlayerItem playerItemWithAsset:self.composition.copy];	// 防止在呈现时对象状态发生改变
+    return itemPlayable;
 }
 
 - (AVAssetExportSession *)makeExportable {
-
-    // Listing 9.3
-
-    return nil;
+	// bq
+	NSString *presetName = AVAssetExportPresetHighestQuality;
+	AVAssetExportSession *sessionExportable = [AVAssetExportSession exportSessionWithAsset:self.composition.copy presetName:presetName];
+    return sessionExportable;
 }
 
 @end

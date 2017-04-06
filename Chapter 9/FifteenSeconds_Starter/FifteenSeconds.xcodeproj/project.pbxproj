@@ -786,6 +786,7 @@
 				INFOPLIST_FILE = "FifteenSeconds/FifteenSeconds-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tapharmonic.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = FifteenSeconds;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -800,6 +801,7 @@
 				INFOPLIST_FILE = "FifteenSeconds/FifteenSeconds-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tapharmonic.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = FifteenSeconds;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

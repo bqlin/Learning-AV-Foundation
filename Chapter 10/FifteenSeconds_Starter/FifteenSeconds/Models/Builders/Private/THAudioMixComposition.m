@@ -48,17 +48,18 @@
 }
 
 - (AVPlayerItem *)makePlayable {
-
-    // Listing 10.2
-
-    return nil;
+	// bq
+	AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:self.composition.copy];
+	playerItem.audioMix = self.audioMix;
+	return playerItem;
 }
 
 - (AVAssetExportSession *)makeExportable {
-
-    // Listing 10.2
-
-    return nil;
+	// bq
+	NSString *presetName = AVAssetExportPresetHighestQuality;
+	AVAssetExportSession *sessionExport = [AVAssetExportSession exportSessionWithAsset:self.composition.copy presetName:presetName];
+	sessionExport.audioMix = sessionExport.audioMix;
+	return sessionExport;
 }
 
 @end

@@ -27,6 +27,7 @@
 
 @interface THAudioItem : THMediaItem
 
+// THVolumeAutomation（保存音量自动调节数据并在用户界面动态创建响应的值）实例的数组
 @property (strong, nonatomic) NSArray *volumeAutomation;
 
 + (id)audioItemWithURL:(NSURL *)url;

@@ -45,17 +45,30 @@
 }
 
 - (id <THComposition>)buildComposition {
-
-    // Listing 10.4
-
-    return nil;
+	// bq
+	self.composition = [AVMutableComposition composition];
+	[self addCompositionTrackOfType:AVMediaTypeVideo withMediaItems:self.timeline.videos];
+	[self addCompositionTrackOfType:AVMediaTypeAudio withMediaItems:self.timeline.voiceOvers];
+	AVMutableCompositionTrack *musicTrack = [self addCompositionTrackOfType:AVMediaTypeAudio withMediaItems:self.timeline.musicItems];
+	AVAudioMix *audioMix = [self buildAudioMixWithTrack:musicTrack];
+	THAudioMixComposition *audioMixComposition = [THAudioMixComposition compositionWithComposition:self.composition audioMix:audioMix];
+	return audioMixComposition;
 }
 
+/// 创建音频混合
 - (AVAudioMix *)buildAudioMixWithTrack:(AVCompositionTrack *)track {
-
-    // Listing 10.5
-
-    return nil;
+	// bq
+	THAudioItem *item = self.timeline.musicItems.firstObject;
+	if (item) {
+		AVMutableAudioMix *audioMix = [AVMutableAudioMix audioMix];
+		AVMutableAudioMixInputParameters *parameters = [AVMutableAudioMixInputParameters audioMixInputParametersWithTrack:track];
+		for (THVolumeAutomation *automation in item.volumeAutomation) {
+			[parameters setVolumeRampFromStartVolume:automation.startVolume toEndVolume:automation.endVolume timeRange:automation.timeRange];
+		}
+		audioMix.inputParameters = @[parameters];
+		return audioMix;
+	}
+	return nil;
 }
 
 - (AVMutableCompositionTrack *)addCompositionTrackOfType:(NSString *)type   // 5
@@ -91,7 +104,7 @@
             cursorTime = CMTimeAdd(cursorTime, item.timeRange.duration);
         }
 
-        return compositionTrack;
+        return compositionTrack;	// 返回了 AVMutableCompositionTrack 对象
     }
 
     return nil;
